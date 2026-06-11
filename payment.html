@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เลือกวิธีชำระเงิน</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .payment-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 400px;
+    }
+    .payment-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .payment-option {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .payment-option:hover {
+      background: #eee;
+    }
+    .payment-box button {
+      width: 100%;
+      padding: 10px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .payment-box button:hover {
+      background: #444;
+    }
+    .hidden {
+      display: none;
+    }
+    .card-form input, .card-form select {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .qr-box {
+      text-align: center;
+      margin-top: 15px;
+    }
+    .qr-box img {
+      width: 200px;
+      height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-box">
+    <h2>เลือกวิธีชำระเงิน</h2>
+    <div class="payment-option">
+      <input type="radio" name="payment" value="cod" id="cod">
+      <label for="cod">💵 เก็บเงินปลายทาง</label>
+    </div>
+    <div class="payment-option">
+      <input type="radio" name="payment" value="card" id="card">
+      <label for="card">💳 บัตรเครดิต/เดบิต</label>
+    </div>
+    <div class="payment-option">
+      <input type="radio" name="payment" value="bank" id="bank">
+      <label for="bank">🏦 แอปธนาคาร</label>
+    </div>
+    <div class="payment-option">
+      <input type="radio" name="payment" value="promptpay" id="promptpay">
+      <label for="promptpay">📱 PromptPay</label>
+    </div>
+
+    <!-- ฟอร์มบัตรเครดิต -->
+    <!-- ฟอร์มบัตรเครดิต -->
+    <div id="card-form" class="card-form hidden">
+        <input type="text" placeholder="เลขบัตรเครดิต/เดบิต">
+        <input type="text" placeholder="รหัส CVV หลังบัตร">
+        
+        <!-- เลือกวันหมดอายุจากปฏิทิน -->
+        <input type="month" id="expiry-date" placeholder="m/y หมดอายุ">
+
+        <input type="text" placeholder="ชื่อผู้ถือบัตร">
+    </div>
+
+
+    <!-- QR Code PromptPay -->
+    <div id="qr-box" class="qr-box hidden">
+      <p>สแกน QR Code เพื่อชำระเงิน</p>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PromptPay:0123456789" alt="PromptPay QR">
+    </div>
+
+    <button onclick="confirmPayment()">ยืนยันการชำระเงิน</button>
+    <p id="message" style="color:green; text-align:center;"></p>
+  </div>
+
+  <script>
+  function confirmPayment() {
+    const selected = document.querySelector('input[name="payment"]:checked');
+    const message = document.getElementById("message");
+    const cardForm = document.getElementById("card-form");
+    const qrBox = document.getElementById("qr-box");
+
+    // ซ่อนทุกส่วนก่อน
+    cardForm.classList.add("hidden");
+    qrBox.classList.add("hidden");
+    message.textContent = "";
+
+    if (!selected) {
+      alert("กรุณาเลือกวิธีชำระเงิน");
+      return;
+    }
+
+    if (selected.value === "cod") {
+      message.textContent = "✅ สั่งซื้อสำเร็จ! ชำระเงินปลายทาง";
+      setTimeout(() => {
+        window.location.href = "store.html"; // กลับไปหน้าร้านค้า
+      }, 2000);
+    } else if (selected.value === "card") {
+      cardForm.classList.remove("hidden");
+      message.textContent = "กรอกข้อมูลบัตรเครดิต/เดบิตด้านล่าง";
+      // เมื่อกรอกเสร็จและยืนยัน สามารถเพิ่ม redirect ได้เช่นกัน
+    } else if (selected.value === "bank") {
+      window.location.href = "bank.html"; // ไปหน้าอื่น
+    } else if (selected.value === "promptpay") {
+      qrBox.classList.remove("hidden");
+      message.textContent = "สแกน QR Code เพื่อชำระเงิน";
+      // สมมติว่าชำระเสร็จแล้ว
+      setTimeout(() => {
+        window.location.href = "store.html"; // กลับไปหน้าร้านค้า
+      }, 5000);
+    }
+  }
+</script>
+
+
+</body>
+</html>

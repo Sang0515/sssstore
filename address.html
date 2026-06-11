@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>กรอกที่อยู่จัดส่ง</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 400px;
+    }
+    .form-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-box input, .form-box textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form-box button {
+      width: 100%;
+      padding: 10px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .form-box button:hover {
+      background: #444;
+    }
+    .map-box {
+      margin-top: 15px;
+      width: 100%;
+      height: 250px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h2>กรอกที่อยู่จัดส่ง</h2>
+    <input type="text" id="fullname" placeholder="ชื่อ-นามสกุล">
+    <input type="text" id="phone" placeholder="เบอร์โทรศัพท์">
+    <textarea id="address" placeholder="ที่อยู่สำหรับจัดส่ง"></textarea>
+
+    <!-- แสดงแมพ -->
+    <div class="map-box">
+        <iframe id="map" 
+            src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=Bangkok,Thailand" 
+            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+        </iframe>
+</div>
+
+
+    <button onclick="confirmAddress()">ยืนยันการสั่งซื้อ</button>
+    <p id="message" style="color:green; text-align:center;"></p>
+  </div>
+
+  <script>
+    function confirmAddress() {
+      const name = document.getElementById("fullname").value;
+      const phone = document.getElementById("phone").value;
+      const addr = document.getElementById("address").value;
+      const message = document.getElementById("message");
+
+      if (!name || !phone || !addr) {
+        alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+        return;
+      }
+
+      // แสดงข้อความยืนยัน
+      message.textContent = `ยืนยันที่อยู่: ${name}, ${phone}, ${addr}`;
+
+      // ไปหน้าชำระเงินหลังจากยืนยัน
+      setTimeout(() => {
+        window.location.href = "payment.html";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
